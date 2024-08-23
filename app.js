@@ -13,7 +13,7 @@ app.use(
       origin: [
          'http://localhost:3000',
          'http://127.0.0.1:3000',
-         'https://your-production-frontend-url.com', // Replace with your actual production frontend URL
+         'https://voting-client-zrpt.onrender.com', // Replace with your actual production frontend URL
       ],
       credentials: true,
    })
