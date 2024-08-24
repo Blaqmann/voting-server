@@ -13,7 +13,7 @@ app.use(
       origin: [
          'http://localhost:3000',
          'http://127.0.0.1:3000',
-         'https://blockchain-voting-client.vercel.app/', // Replace with your actual production frontend URL
+         'https://blockchain-voting-client.vercel.app', // Replace with your actual production frontend URL
       ],
       credentials: true,
    })
