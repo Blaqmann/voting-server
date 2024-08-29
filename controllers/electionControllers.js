@@ -2,11 +2,11 @@ const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncError = require('../middlewares/catchAsyncErrors');
 const User = require('../models/user');
 const sendEmail = require('../utils/sendEmail');
-const sendEmailProd = require('../utils/sendEmailProd');
+
+
 //Function to start election
 // => api/election/startElection
 // admin access
-
 exports.startElection = catchAsyncError(async (req, res, next) => {
    const users = await User.find();
    users.forEach((user) => {
@@ -46,31 +46,6 @@ exports.endElection = catchAsyncError(async (req, res, next) => {
       updateUserVote(user);
    });
 
-   //sort canddiates
-
-   // candidates = sortCandidate(candidates, next);
-
-   //checking if there is a draw
-
-   // if(candidates[candidates.length - 2].votes == candidates[candidates.length - 1].votes){
-   //     isDraw = true;
-
-   // }
-
-   //update in datbase
-
-   // const newData = {
-   //     isOngoing: false,
-   //     candidates : candidates,
-   //     isDraw: isDraw
-   // }
-
-   // const updatedElection = await Election.findByIdAndUpdate(election.id, newData,{
-
-   //     new: true,
-   //     runValidators: true,
-   //     useFindAndModify: false
-   // });
 
    res.status(200).json({
       success: true,
@@ -106,19 +81,11 @@ async function updateUserVote(user) {
 //function to send email that election has started
 async function electionEmail(user, message, next) {
    try {
-      if (process.env.NODE_ENV == 'production') {
-         await sendEmailProd({
-            to: user.email,
-            subject: 'Election',
-            html: `<p>${message}</p>`,
-         });
-      } else {
-         await sendEmail({
-            email: user.email,
-            subject: 'Election',
-            message,
-         });
-      }
+      await sendEmail({
+         email: user.email,
+         subject: 'Election',
+         message,
+      });
    } catch (error) {
       return next(new ErrorHandler('Internal Server Error', 500));
    }
