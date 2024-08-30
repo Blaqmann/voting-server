@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncError = require('../middlewares/catchAsyncErrors');
 const User = require('../models/user');
@@ -11,7 +13,7 @@ exports.startElection = catchAsyncError(async (req, res, next) => {
    const users = await User.find();
    users.forEach((user) => {
       //sending an email to each user that election has started
-      electionEmail(user, 'Election has started. Login to vote', next);
+      electionEmail(user, `Election has started. Login to vote: ${process.env.REACT_APP_URL}`, next);
 
       //Updating each user ongoing variable to true
       updateUser(user, true);
@@ -35,7 +37,7 @@ exports.endElection = catchAsyncError(async (req, res, next) => {
       //sending an email to each user that election has ended
       electionEmail(
          user,
-         `Election has ended. Visit ${req.protocol}://${req.get('host')}/results/${address}`,
+         `Election has ended. Visit ${process.env.REACT_APP_URL} to see results`,
          next
       );
 
